@@ -1,15 +1,82 @@
-import { Text, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
+import Text from './Text';
+import theme from '../theme';
+import { roundStatNumber } from '../utils';
+import { FlatList } from 'react-native-web';
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#ffffff',
+    padding: 10,
+  },
+  profilePicture: {
+    width: 64,
+    height: 64,
+    borderRadius: 10,
+  },
+  bodyContainer: {
+    flexDirection: 'row',
+  },
+  infoContainer: {
+    paddingLeft: 20,
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
+  statsContainer: {
+    paddingVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  tagContainer: {
+    backgroundColor: theme.colors.primary,
+    marginTop: 5,
+    padding: 5,
+    borderRadius: 4,
+  },
+  tagText: {
+    color: 'white',
+  },
+  statItem: {
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+});
 
 const RepositoryItem = ({ item }) => {
   return (
-    <View>
-      <Text>Full name: {item.fullName}</Text>
-      <Text>Description: {item.description}</Text>
-      <Text>Language: {item.language}</Text>
-      <Text>Stars: {item.stargazersCount}</Text>
-      <Text>Forks: {item.forksCount}</Text>
-      <Text>Reviews: {item.reviewCount}</Text>
-      <Text>Rating: {item.ratingAverage}</Text>
+    <View style={styles.container}>
+      <View style={styles.bodyContainer}>
+        <Image
+          style={styles.profilePicture}
+          source={{ uri: item.ownerAvatarUrl }}
+        ></Image>
+        <View style={styles.infoContainer}>
+          <Text fontWeight='bold'>{item.fullName}</Text>
+          <Text color='textSecondary'>{item.description}</Text>
+          <View style={styles.tagContainer}>
+            <Text style={styles.tagText}>{item.language}</Text>
+          </View>
+        </View>
+      </View>
+      <View style={styles.statsContainer}>
+        <View style={styles.statItem}>
+          <Text fontWeight='bold'>{roundStatNumber(item.stargazersCount)}</Text>
+          <Text color='textSecondary'>Stars</Text>
+        </View>
+        <View style={styles.statItem}>
+          <Text fontWeight='bold'>{roundStatNumber(item.forksCount)}</Text>
+          <Text color='textSecondary'>Forks</Text>
+        </View>
+        <View style={styles.statItem}>
+          <Text fontWeight='bold'>{roundStatNumber(item.reviewCount)}</Text>
+          <Text color='textSecondary'>Reviews</Text>
+        </View>
+        <View style={styles.statItem}>
+          <Text fontWeight='bold'>{roundStatNumber(item.ratingAverage)}</Text>
+          <Text color='textSecondary'>Rating</Text>
+        </View>
+      </View>
     </View>
   );
 };
