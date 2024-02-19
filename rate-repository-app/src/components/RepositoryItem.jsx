@@ -5,7 +5,7 @@ import { roundStatNumber } from '../utils';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff',
+    backgroundColor: theme.colors.backgroundComponent,
     padding: 10,
   },
   profilePicture: {
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   tagText: {
-    color: 'white',
+    color: '#ffffff',
   },
   statItem: {
     flexDirection: 'column',
