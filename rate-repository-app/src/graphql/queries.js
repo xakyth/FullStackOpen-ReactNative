@@ -9,3 +9,12 @@ export const GET_REPOSITORIES = gql`
   }
   ${REPOSITORY_CONNECTION_FIELDS}
 `;
+
+export const CURRENT_USER = gql`
+  query {
+    me {
+      id
+      username
+    }
+  }
+`;
