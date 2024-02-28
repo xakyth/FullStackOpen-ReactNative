@@ -23,18 +23,6 @@ const theme = {
     normal: '400',
     bold: '700',
   },
-  buttonContainer: {
-    borderRadius: 4,
-    backgroundColor: '#0366d6',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 40,
-  },
-  buttonText: {
-    color: '#ffffff',
-    fontWeight: '700',
-    fontSize: 16,
-  },
 };
 
 export default theme;

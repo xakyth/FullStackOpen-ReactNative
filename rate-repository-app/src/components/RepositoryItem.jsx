@@ -2,6 +2,13 @@ import { Image, StyleSheet, View } from 'react-native';
 import Text from './Text';
 import theme from '../theme';
 import { roundStatNumber } from '../utils';
+import { useParams } from 'react-router-native';
+import { useState } from 'react';
+import { useLazyQuery } from '@apollo/client';
+import { GET_REPOSITORY_BY_ID } from '../graphql/queries';
+import { useEffect } from 'react';
+import Button from './Button';
+import * as Linking from 'expo-linking';
 
 const styles = StyleSheet.create({
   container: {
@@ -42,7 +49,31 @@ const styles = StyleSheet.create({
   },
 });
 
+export const RepositoryItemById = () => {
+  const [item, setItem] = useState();
+  const { id } = useParams();
+  const [getRepositoryById] = useLazyQuery(GET_REPOSITORY_BY_ID, {
+    variables: { repositoryId: id },
+  });
+
+  const findById = async () => {
+    const response = await getRepositoryById();
+    setItem(response.data.repository);
+  };
+
+  useEffect(() => {
+    findById();
+  }, []);
+
+  if (!item) return null;
+  return <RepositoryItem item={item} />;
+};
+
 const RepositoryItem = ({ item }) => {
+  const handleOpenInGitHub = (url) => {
+    Linking.openURL(url);
+  };
+
   return (
     <View testID='repositoryItem' style={styles.container}>
       <View style={styles.bodyContainer}>
@@ -76,6 +107,12 @@ const RepositoryItem = ({ item }) => {
           <Text color='textSecondary'>Rating</Text>
         </View>
       </View>
+      {item.url && (
+        <Button
+          onPress={() => handleOpenInGitHub(item.url)}
+          label='Open in GutHub'
+        ></Button>
+      )}
     </View>
   );
 };
