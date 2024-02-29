@@ -27,7 +27,6 @@ export default {
   },
   web: {
     favicon: './assets/favicon.png',
-    bundler: 'metro',
   },
   extra: {
     env: process.env.ENV,
