@@ -2,7 +2,6 @@ import { Pressable, StyleSheet, Text } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
     borderRadius: 4,
     backgroundColor: '#0366d6',
     alignItems: 'center',
@@ -16,9 +15,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const Button = ({ label, onPress }) => {
+const Button = ({ style, label, onPress }) => {
+  const buttonBoxStyle = [style, styles.container];
   return (
-    <Pressable onPress={onPress} style={styles.container}>
+    <Pressable onPress={onPress} style={buttonBoxStyle}>
       <Text style={styles.text}>{label}</Text>
     </Pressable>
   );

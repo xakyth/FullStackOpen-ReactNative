@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
     display: 'flex',
     padding: 10,
   },
+  signInButton: {
+    marginTop: 10,
+  },
 });
 
 const initialValues = {
@@ -42,7 +45,11 @@ export const LoginForm = ({ onSubmit }) => {
               secureTextEntry
             />
           </View>
-          <Button label='Sign in' onPress={handleSubmit}></Button>
+          <Button
+            style={styles.signInButton}
+            label='Sign in'
+            onPress={handleSubmit}
+          ></Button>
         </View>
       )}
     </Formik>
