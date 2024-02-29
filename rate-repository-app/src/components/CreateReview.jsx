@@ -6,8 +6,13 @@ import Button from './Button';
 import { useMutation } from '@apollo/client';
 import { CREATE_REVIEW } from '../graphql/mutations';
 import { useNavigate } from 'react-router-native';
+import theme from '../theme';
 
 const styles = StyleSheet.create({
+  container: {
+    padding: 10,
+    backgroundColor: theme.colors.backgroundComponent,
+  },
   createButton: {
     marginTop: 10,
   },
@@ -62,7 +67,7 @@ const CreateReview = () => {
       validationSchema={validationSchema}
     >
       {({ handleSubmit }) => (
-        <View>
+        <View style={styles.container}>
           <FormikTextInput
             name='owner'
             placeholder='Repository owner name'
