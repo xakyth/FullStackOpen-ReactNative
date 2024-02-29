@@ -93,6 +93,7 @@ const SingleRepository = () => {
   const { id } = useParams();
   const [getRepositoryById] = useLazyQuery(GET_REPOSITORY_BY_ID, {
     variables: { repositoryId: id },
+    fetchPolicy: 'cache-and-network',
   });
 
   const findById = async () => {
