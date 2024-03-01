@@ -10,7 +10,7 @@ const useRepositories = () => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const fetchRepositories = async (orderValue) => {
+  const fetchRepositories = async (orderValue, filterValue) => {
     let orderBy = 'CREATED_AT';
     let orderDirection = 'DESC';
     switch (orderValue) {
@@ -30,9 +30,12 @@ const useRepositories = () => {
         break;
     }
     setLoading(true);
-
     const response = await getRepositories({
-      variables: { orderBy, orderDirection },
+      variables: {
+        orderBy,
+        orderDirection,
+        searchKeyword: filterValue,
+      },
     });
 
     setLoading(false);
