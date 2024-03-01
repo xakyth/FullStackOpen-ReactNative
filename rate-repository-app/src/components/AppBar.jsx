@@ -63,6 +63,11 @@ const AppBar = () => {
             <Text style={styles.text}>Sign out</Text>
           </Pressable>
         )}
+        {!user && (
+          <Link to='/signUp'>
+            <Text style={styles.text}>Sign up</Text>
+          </Link>
+        )}
       </ScrollView>
     </View>
   );
