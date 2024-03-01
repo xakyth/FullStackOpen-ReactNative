@@ -5,8 +5,11 @@ import {
 } from './fragments';
 
 export const GET_REPOSITORIES = gql`
-  query repositories {
-    repositories {
+  query repositories(
+    $orderBy: AllRepositoriesOrderBy
+    $orderDirection: OrderDirection
+  ) {
+    repositories(orderBy: $orderBy, orderDirection: $orderDirection) {
       ...REPOSITORY_CONNECTION_FIELDS
     }
   }
