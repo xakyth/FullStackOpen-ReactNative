@@ -12,11 +12,12 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontWeight: '700',
     fontSize: 16,
+    paddingHorizontal: 8,
   },
 });
 
 const Button = ({ style, label, onPress }) => {
-  const buttonBoxStyle = [style, styles.container];
+  const buttonBoxStyle = [styles.container, style];
   return (
     <Pressable onPress={onPress} style={buttonBoxStyle}>
       <Text style={styles.text}>{label}</Text>
