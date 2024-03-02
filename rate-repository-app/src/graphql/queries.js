@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client';
 import {
   REPOSITORY_CONNECTION_FIELDS,
+  REVIEW_FIELDS,
   SINGLE_REPOSITORY_FIELDS,
 } from './fragments';
 
@@ -22,12 +23,16 @@ export const GET_REPOSITORIES = gql`
 `;
 
 export const CURRENT_USER = gql`
-  query {
+  query getCurrentUser($includeReviews: Boolean = false) {
     me {
       id
       username
+      reviews @include(if: $includeReviews) {
+        ...REVIEW_FIELDS
+      }
     }
   }
+  ${REVIEW_FIELDS}
 `;
 
 export const GET_REPOSITORY_BY_ID = gql`

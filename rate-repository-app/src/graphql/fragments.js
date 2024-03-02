@@ -18,6 +18,24 @@ export const REPOSITORY_CONNECTION_FIELDS = gql`
   }
 `;
 
+export const REVIEW_FIELDS = gql`
+  fragment REVIEW_FIELDS on ReviewConnection {
+    edges {
+      cursor
+      node {
+        createdAt
+        id
+        rating
+        text
+        user {
+          id
+          username
+        }
+      }
+    }
+  }
+`;
+
 export const SINGLE_REPOSITORY_FIELDS = gql`
   fragment SINGLE_REPOSITORY_FIELDS on Repository {
     description
@@ -31,19 +49,8 @@ export const SINGLE_REPOSITORY_FIELDS = gql`
     stargazersCount
     url
     reviews {
-      edges {
-        cursor
-        node {
-          createdAt
-          id
-          rating
-          text
-          user {
-            id
-            username
-          }
-        }
-      }
+      ...REVIEW_FIELDS
     }
   }
+  ${REVIEW_FIELDS}
 `;

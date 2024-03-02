@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.backgroundComponent,
     flex: 1,
     flexDirection: 'row',
+    paddingBottom: 10,
   },
   reviewRatingContainer: {
     borderColor: theme.colors.primary,
@@ -64,7 +65,7 @@ const RepositoryInfo = ({ repository }) => {
   );
 };
 
-const ReviewItem = ({ review }) => {
+export const ReviewItem = ({ review }) => {
   return (
     <View style={styles.reviewContainer}>
       <View style={styles.reviewRatingContainer}>
