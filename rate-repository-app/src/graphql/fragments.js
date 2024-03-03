@@ -15,6 +15,10 @@ export const REPOSITORY_CONNECTION_FIELDS = gql`
         stargazersCount
       }
     }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
   }
 `;
 

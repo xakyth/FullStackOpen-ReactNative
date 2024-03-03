@@ -35,9 +35,6 @@ const styles = StyleSheet.create({
 const ItemSeparator = () => <View style={styles.separator} />;
 
 export const RepositoryListContainer = ({ repositories, onEndReach }) => {
-  const repositoryNodes = repositories
-    ? repositories.edges.map((edge) => edge.node)
-    : [];
   const navigate = useNavigate();
   const onPress = (id) => {
     navigate(`/repositoryList/${id}`);
@@ -46,7 +43,7 @@ export const RepositoryListContainer = ({ repositories, onEndReach }) => {
   return (
     <View style={styles.backgroundColor}>
       <FlatList
-        data={repositoryNodes}
+        data={repositories}
         ItemSeparatorComponent={ItemSeparator}
         onEndReached={onEndReach}
         onEndReachedThreshold={0.5}
@@ -68,10 +65,12 @@ const RepositoryList = () => {
   const [orderDirection, setOrderDirection] = useState('DESC');
   const [filter, setFilter] = useState('');
   const [searchKeyword] = useDebounce(filter, 500);
-  const { repositories, refetch } = useRepositories({
+  const [first, setFirst] = useState(8);
+  const { repositories, refetch, fetchMore } = useRepositories({
     orderBy,
     orderDirection,
     searchKeyword,
+    first,
   });
 
   useEffect(() => {
@@ -79,7 +78,7 @@ const RepositoryList = () => {
   }, [orderBy, orderDirection, searchKeyword]);
 
   const onEndReach = () => {
-    console.log('reach end of the list');
+    fetchMore();
   };
 
   useEffect(() => {
