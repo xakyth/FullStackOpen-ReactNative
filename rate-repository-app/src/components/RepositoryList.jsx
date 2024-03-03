@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-export const RepositoryListContainer = ({ repositories }) => {
+export const RepositoryListContainer = ({ repositories, onEndReach }) => {
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
     : [];
@@ -48,6 +48,8 @@ export const RepositoryListContainer = ({ repositories }) => {
       <FlatList
         data={repositoryNodes}
         ItemSeparatorComponent={ItemSeparator}
+        onEndReached={onEndReach}
+        onEndReachedThreshold={0.5}
         renderItem={({ item }) => {
           return (
             <Pressable onPress={() => onPress(item.id)}>
@@ -61,14 +63,43 @@ export const RepositoryListContainer = ({ repositories }) => {
 };
 
 const RepositoryList = () => {
-  const { repositories, refetch } = useRepositories();
-  const [orderBy, setOrderBy] = useState('latestReview');
+  const [repositoryOrder, setRepositoryOrder] = useState('latestReview');
+  const [orderBy, setOrderby] = useState('CREATED_AT');
+  const [orderDirection, setOrderDirection] = useState('DESC');
   const [filter, setFilter] = useState('');
-  const [filterValue] = useDebounce(filter, 500);
+  const [searchKeyword] = useDebounce(filter, 500);
+  const { repositories, refetch } = useRepositories({
+    orderBy,
+    orderDirection,
+    searchKeyword,
+  });
 
   useEffect(() => {
-    refetch(orderBy, filterValue);
-  }, [orderBy, filterValue]);
+    refetch();
+  }, [orderBy, orderDirection, searchKeyword]);
+
+  const onEndReach = () => {
+    console.log('reach end of the list');
+  };
+
+  useEffect(() => {
+    switch (repositoryOrder) {
+      case 'latestReview':
+        setOrderby('CREATED_AT');
+        setOrderDirection('DESC');
+        break;
+      case 'highestReview':
+        setOrderby('RATING_AVERAGE');
+        setOrderDirection('DESC');
+        break;
+      case 'lowestReview':
+        setOrderby('RATING_AVERAGE');
+        setOrderDirection('ASC');
+        break;
+      default:
+        break;
+    }
+  }, [repositoryOrder]);
 
   return (
     <View>
@@ -81,8 +112,8 @@ const RepositoryList = () => {
         />
       </View>
       <Picker
-        selectedValue={orderBy}
-        onValueChange={(itemValue) => setOrderBy(itemValue)}
+        selectedValue={repositoryOrder}
+        onValueChange={(itemValue) => setRepositoryOrder(itemValue)}
         style={styles.pickerContainer}
       >
         <Picker.Item
@@ -95,7 +126,10 @@ const RepositoryList = () => {
         <Picker.Item label='Highest rated repositories' value='highestReview' />
         <Picker.Item label='Lowest rated repositories' value='lowestReview' />
       </Picker>
-      <RepositoryListContainer repositories={repositories} />
+      <RepositoryListContainer
+        onEndReach={onEndReach}
+        repositories={repositories}
+      />
     </View>
   );
 };
