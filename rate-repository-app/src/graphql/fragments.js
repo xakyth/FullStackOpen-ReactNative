@@ -41,6 +41,10 @@ export const REVIEW_FIELDS = gql`
         }
       }
     }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
   }
 `;
 
@@ -56,7 +60,7 @@ export const SINGLE_REPOSITORY_FIELDS = gql`
     reviewCount
     stargazersCount
     url
-    reviews {
+    reviews(first: $first, after: $after) {
       ...REVIEW_FIELDS
     }
   }

@@ -65,7 +65,7 @@ const RepositoryList = () => {
   const [orderDirection, setOrderDirection] = useState('DESC');
   const [filter, setFilter] = useState('');
   const [searchKeyword] = useDebounce(filter, 500);
-  const [first, setFirst] = useState(8);
+  const first = 8;
   const { repositories, refetch, fetchMore } = useRepositories({
     orderBy,
     orderDirection,

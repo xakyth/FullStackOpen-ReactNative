@@ -40,7 +40,7 @@ export const CURRENT_USER = gql`
 `;
 
 export const GET_REPOSITORY_BY_ID = gql`
-  query getRepositoryById($repositoryId: ID!) {
+  query getRepositoryById($repositoryId: ID!, $first: Int, $after: String) {
     repository(id: $repositoryId) {
       ...SINGLE_REPOSITORY_FIELDS
     }

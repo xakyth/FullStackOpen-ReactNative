@@ -1,4 +1,4 @@
-import { useLazyQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-native';
 import { GET_REPOSITORY_BY_ID } from '../graphql/queries';
@@ -92,20 +92,33 @@ const SingleRepository = () => {
   const [repository, setRepository] = useState();
   const [reviews, setReviews] = useState([]);
   const { id } = useParams();
-  const [getRepositoryById] = useLazyQuery(GET_REPOSITORY_BY_ID, {
-    variables: { repositoryId: id },
+  const first = 5;
+  const { data, fetchMore } = useQuery(GET_REPOSITORY_BY_ID, {
+    variables: { repositoryId: id, first },
     fetchPolicy: 'cache-and-network',
+    skip: !id,
   });
 
-  const findById = async () => {
-    const response = await getRepositoryById();
-    setRepository(response.data.repository);
-    setReviews(response.data.repository.reviews.edges.map((edge) => edge.node));
-  };
-
   useEffect(() => {
-    findById();
-  }, []);
+    if (data) {
+      setRepository(data.repository);
+      setReviews(data.repository.reviews.edges.map((edge) => edge.node));
+    }
+  }, [data]);
+
+  const onEndReach = async () => {
+    const response = await fetchMore({
+      variables: {
+        repository: id,
+        after: data.repository.reviews.pageInfo.endCursor,
+      },
+    });
+    setReviews(
+      reviews.concat(
+        response.data.repository.reviews.edges.map((edge) => edge.node)
+      )
+    );
+  };
 
   if (!repository) return null;
   return (
@@ -113,6 +126,8 @@ const SingleRepository = () => {
       data={reviews}
       renderItem={({ item }) => <ReviewItem review={item} />}
       keyExtractor={({ id }) => id}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
       ListHeaderComponent={() => <RepositoryInfo repository={repository} />}
       ItemSeparatorComponent={ItemSeparator}
     />
